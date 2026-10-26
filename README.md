@@ -4,20 +4,20 @@ Minimal player package. It contains only the Docker challenge runtime and setup 
 
 Requirements: Docker Desktop.
 
-## Cách chạy
+## Setup
 
-1. Mở PowerShell tại đúng thư mục `php2shell-hard`.
-2. Chạy:
+1. Open PowerShell in the `php2shell-hard` directory.
+2. Run:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\setup.ps1
 ```
 
-Hoặc chạy `setup.bat` bằng cách double-click.
+Alternatively, double-click `setup.bat`.
 
-`setup.ps1` tự tạo `.env`, điền sẵn các URL verifier và tạo một session mới cho lần chạy đó. Không cần sửa `.env` thủ công. Dùng `-ReuseSession` nếu muốn giữ session cũ.
+`setup.ps1` creates `.env`, fills in the verifier URLs, and creates a fresh session for the run. No manual `.env` editing is required. Use `-ReuseSession` when you intentionally want to keep the existing session.
 
 Target: `http://127.0.0.1:44158/`  
 Proof status: `http://127.0.0.1:44159/status.php`
 
-Verifier Hard đã được cấu hình trong `.env.example`; session token được tạo tự động khi setup và file `.env` bị Git ignore. Exploits, walkthroughs, flags, operator secrets và local demo checkers được loại khỏi package.
+The Hard verifier endpoints are listed in `.env.example`. The session token is generated during setup, and `.env` is ignored by Git. Exploits, walkthroughs, flags, operator secrets, and local demo checkers are intentionally excluded from this package.
