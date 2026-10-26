@@ -15,9 +15,9 @@ powershell -ExecutionPolicy Bypass -File .\setup.ps1
 
 Hoặc chạy `setup.bat` bằng cách double-click.
 
-`setup.ps1` tự tạo `.env` từ `.env.example` nếu file chưa tồn tại. Không cần sửa `.env` để khởi động challenge local.
+`setup.ps1` tự tạo `.env`, điền sẵn các URL verifier và tạo một session mới cho lần chạy đó. Không cần sửa `.env` thủ công. Dùng `-ReuseSession` nếu muốn giữ session cũ.
 
 Target: `http://127.0.0.1:44158/`  
 Proof status: `http://127.0.0.1:44159/status.php`
 
-Nếu platform cấp verifier session, người chơi chỉ cần điền các giá trị đó vào `.env` để nickname/ranking hoạt động remote. Khi chưa được cấp các giá trị này, challenge vẫn khởi động và cho phép test local, nhưng phần submit remote sẽ báo verifier chưa được cấu hình. Không tự đoán hoặc commit session token. Exploits, walkthroughs, flags, operator secrets và local demo checkers được loại khỏi package.
+Verifier Hard đã được cấu hình trong `.env.example`; session token được tạo tự động khi setup và file `.env` bị Git ignore. Exploits, walkthroughs, flags, operator secrets và local demo checkers được loại khỏi package.
