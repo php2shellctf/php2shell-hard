@@ -1,0 +1,41 @@
+name: php2shell-ctf
+
+services:
+  target:
+    image: php:8.3.35-apache-bookworm
+    platform: linux/amd64
+    container_name: php2shell-ctf
+    ports:
+      - "127.0.0.1:44158:80"
+      - "127.0.0.1:44159:8081"
+    environment:
+      # Optional session-bound checker configuration for the nickname page.
+      PHP2SHELL_RANKING_URL: ${PHP2SHELL_RANKING_URL:-}
+      PHP2SHELL_KEY_URL: ${PHP2SHELL_KEY_URL:-}
+      PHP2SHELL_CHECK_URL: ${PHP2SHELL_CHECK_URL:-}
+      PHP2SHELL_SESSION_TOKEN: ${PHP2SHELL_SESSION_TOKEN:-}
+      # Keep status polling off the vulnerable Apache worker.
+      PHP2SHELL_STATUS_URL: http://127.0.0.1:44159/status.php
+    volumes:
+      - "./docker/php.ini:/usr/local/etc/php/conf.d/zz-php2shell.ini:ro"
+      - "./docker/apache.conf:/etc/apache2/conf-enabled/zz-php2shell.conf:ro"
+      - "./web:/var/www/html:ro"
+    tmpfs:
+      - "/run/ctf:uid=33,gid=33,mode=1777"
+      - "/out:uid=33,gid=33,mode=1777"
+      - "/tmp:uid=33,gid=33,mode=1777"
+    command:
+      - /bin/sh
+      - -c
+      - umask 077 && head -c 24 /dev/urandom | base64 | tr -d '\n' > /run/ctf/proof-token && chown 33:33 /run/ctf/proof-token && chmod 0440 /run/ctf/proof-token && ln -sf /run/ctf/proof-token /p && php -S 0.0.0.0:8081 /var/www/html/status-router.php >/tmp/status-server.log 2>&1 & exec apache2-foreground
+    restart: "no"
+    pids_limit: 64
+    mem_limit: 512m
+    networks:
+      - challenge
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+networks:
+  challenge:
+    driver: bridge
